@@ -1,20 +1,18 @@
 const mongoose = require('mongoose')
+const logger = require('../services/LoggerService');
 require('dotenv').config()
 
 const mongooseOptions = {
-    useNewUrlParser: true,
-    useFindAndModify: false,
     useUnifiedTopology: true
 };
 
-mongoose.connect(process.env.MONGO_URL, {
-    mongooseOptions
-}, (err) => {
-    if (!err) {
-        console.log(`DB CONNECTED TO :  ${process.env.MONGO_DB}`)
-    } else {
-        console.log(`DB CONNECTION  FAILED ${err.stack}`)
-    }
-});
+mongoose.connect(process.env.MONGO_URL,
+    mongooseOptions, (err) => {
+        if (!err) {
+            logger.info(`Database connected : ${process.env.MONGO_DB}`)
+        } else {
+            logger.error(`Database Connection Failed : ${err.stack}`)
+        }
+    });
 
 module.exports.connection = mongoose.connection;
